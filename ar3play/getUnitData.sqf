@@ -46,7 +46,7 @@ _getHealth = {
 
 	_health = 'dead';
 	if (alive _this) then {
-		if (_this getVariable ["AGM_isUnconscious", false]) then {
+		if ((_this getVariable ["AGM_isUnconscious", false] or (_this getvariable ["ACE_isUnconscious",false])) then {
 			_health = 'unconscious';
 		} else {
 			_health = 'alive';
