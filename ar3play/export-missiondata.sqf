@@ -58,7 +58,7 @@ _sendDataLoop = {
 
 	while {(call _arePlayersConnected) && (AR3PLAY_ENABLE_REPLAY)} do {
 		_unitsDataArray = [];
-	
+		_unitsIDs = [];
 		//ermittlung der daten von aktiven einheiten etc.
 		{
 			if ((side _x != sideLogic) && (_x isKindOf "AllVehicles")) then {
