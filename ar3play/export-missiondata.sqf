@@ -78,7 +78,7 @@ _sendDataLoop = {
 			{
 				_searchID = _x;
 				{
-					if ((_x select 0) = _searchID) then {
+					if ((_x select 0) == _searchID) then {
 						_x set [6, 'dead'];
 						_unitsDataArray pushBack _x;
 					}
