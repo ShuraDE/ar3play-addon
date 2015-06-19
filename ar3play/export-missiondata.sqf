@@ -49,22 +49,47 @@ _missionStarted = {
 _sendDataLoop = {
 	private "_getUnitData";
 	private "_arePlayersConnected";
+	
+	private "_lastUnitCount";
+	private "_lastUnitIDS";
+	private "_lastUnitsIdentification";
 
 	_getUnitData = _this select 0;
 	_arePlayersConnected = _this select 1;
 
 	while {(call _arePlayersConnected) && (AR3PLAY_ENABLE_REPLAY)} do {
 		_unitsDataArray = [];
+
 		{
 			if ((side _x != sideLogic) && (_x isKindOf "AllVehicles")) then {
 				_unitData = [_x] call _getUnitData;
 				if ((_unitData select 7) != "iconObject_1x1") then {
 					_unitsDataArray pushBack _unitData;
+					_unitsIDs pushBack (_unitData select 0);
 				};
 			};
 		} forEach allUnits + allDead + vehicles;
-
-
+		
+		//prüfen ob die sich die anzahl der einheiten reduziert hat um sie ggf. zu entfernen
+		//damit die einheit entfernt wird, muss sie noch einmalig gesendet werden
+		//setzen des health status auf dead
+		if ((_lastUnitCount > 0) && (_lastUnitCount > count _unitsDataArray) && (count _lastUnitsIdentification > 0)) then {
+			_unitDiff = _unitsIDs - _lastUnitIDS;
+			{
+				_searchID = _x;
+				{
+					if ((_x select 0) = _searchID) then {
+						_x set [6, 'dead'];
+						_unitsDataArray pushBack _x;
+					}
+				} forEach _lastUnitsIdentification;
+				
+			} forEach _unitDiff;
+		};
+		_lastUnitIDS = + _unitsIDs;
+		_lastUnitCount = count _unitsDataArray;
+		_lastUnitsIdentification = + _unitsDataArray;
+		
 		['setAllUnitData', [_unitsDataArray]] call sock_rpc;
 		sleep 1;
 	};
