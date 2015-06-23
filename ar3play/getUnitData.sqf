@@ -12,7 +12,10 @@ private [
 	'_vehicletype',
 	'_getObjectId',
 	'_getContainerObjectId',
-	'_getHealth'
+	'_getHealth',
+	'_posStW',
+	'_dirWatching',
+	'_unitStance'
 ];
 
 
@@ -92,6 +95,11 @@ _name = _unit call _getName;
 _container = _unit call _getContainerObjectId;
 _contents = _unit call _getContentsObjectIds;
 
+//get facing direction
+_posStW = screenToWorld [0.5,0.5];
+_dirWatching = ((((_posStW select 0) - (_pos select 0)) atan2 ((_posStW select 1) - (_pos select 1))) + 360) % 360;
+_unitStance = [2, 1, 0, -1, -1] select (["STAND", "CROUCH", "PRONE", "UNDEFINED", ""] find stance _unit);
+
 [
 	_objectId,
 	(_pos select 0),
@@ -105,3 +113,4 @@ _contents = _unit call _getContentsObjectIds;
 	_container,
 	_contents
 ]
+//append _dirWatching, _unitStance for additional informations
