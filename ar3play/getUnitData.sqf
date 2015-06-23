@@ -98,8 +98,8 @@ _contents = _unit call _getContentsObjectIds;
 //get facing direction
 _posStW = screenToWorld [0.5,0.5];
 _dirWatching = ((((_posStW select 0) - (_pos select 0)) atan2 ((_posStW select 1) - (_pos select 1))) + 360) % 360;
-_unitStance = [2, 1, 0, -1, -1] select (["STAND", "CROUCH", "PRONE", "UNDEFINED", ""] find stance _unit);
-// unuseable ? + ([4, 8, 16, 32] select (["INTERNAL", "EXTERNAL", "GUNNER", "GROUP"] find cameraView));
+_unitStance = [1, 2, 4, 8, 16] select (["STAND", "CROUCH", "PRONE", "UNDEFINED", ""] find stance _unit);
+// unuseable ? + ([32, 64, 128, 256] select (["INTERNAL", "EXTERNAL", "GUNNER", "GROUP"] find cameraView));
 [
 	_objectId,
 	(_pos select 0),
